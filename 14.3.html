@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+</head>
+<body>
+<label>
+    <select name="select" class = "selectYear">
+        <option value="" selected></option>
+        <option value="2017">2017</option>
+        <option value="2018">2018</option>
+        <option value="2019">2019</option>
+    </select>
+</label>
+<button class = "but"> Загрузить отчет </button>
+<table border='1' cellpadding='10'>
+    <tbody>
+    <tr>
+        <td><b>кв.1</b></td>
+        <td><b>кв.2</b></td>
+        <td><b>кв.3</b></td>
+        <td><b>кв.4</b></td>
+    </tr>
+    <tr>
+        <td class = "q1"></td>
+        <td class = "q2"></td>
+        <td class = "q3"></td>
+        <td class = "q4"></td>
+    </tr>
+    </tbody>
+</table>
+<script>
+    const reqUrl = "https://my.api.mockaroo.com/revenue_2017-2019.json?key=fd36b440"
+
+    function useRequest(URL,callback){
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', URL, true);
+        xhr.onload = function(){
+            if (xhr.status !== 200){
+                console.log('Статус ответа', xhr.status)
+            } else {
+                const result = JSON.parse(xhr.response);
+                if (callback){
+                    callback(result)
+                }
+            }
+        }
+        xhr.onerror = function (){
+            console.log ('Ошибка! Статус ответа', xhr.status);
+        }
+        xhr.send();
+    }
+    let butNode = document.querySelector('.but');
+    let selectYear = document.querySelectorAll('.selectYear');
+
+    let q1 = document.querySelector('.q1');
+    let q2 = document.querySelector('.q2');
+    let q3 = document.querySelector('.q3');
+    let q4 = document.querySelector('.q4');
+
+
+    function showReport(apiData){
+        if (selectYear[0].value === ""){
+            q1.innerText = "";
+            q2.innerText = "";
+            q3.innerText = "";
+            q4.innerText = "";
+            alert ("Выберите год.");
+        } else if (selectYear[0].value === "2017"){
+            q1.innerText = apiData[0].sales.q1;
+            q2.innerText = apiData[0].sales.q2;
+            q3.innerText = apiData[0].sales.q3;
+            q4.innerText = apiData[0].sales.q4;
+        } else if (selectYear[0].value === "2018"){
+            q1.innerText = apiData[1].sales.q1;
+            q2.innerText = apiData[1].sales.q2;
+            q3.innerText = apiData[1].sales.q3;
+            q4.innerText = apiData[1].sales.q4;
+        } else if (selectYear[0].value === "2019") {
+            q1.innerText = apiData[2].sales.q1;
+            q2.innerText = apiData[2].sales.q2;
+            q3.innerText = apiData[2].sales.q3;
+            q4.innerText = apiData[2].sales.q4;
+        }
+
+    }
+
+
+    butNode.addEventListener('click', ()=>{
+        useRequest(reqUrl,showReport)});
+</script>
+</body>
+</html>

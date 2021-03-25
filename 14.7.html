@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+</head>
+<body>
+<div>
+    <label for="id">Введите ID</label>
+    <input type = "text" id = "id">
+    <button type ="submit" id = "btn">Получить список задач</button>
+</div>
+<div><ul id = 'result'></ul></div>
+<script>
+    const btn = document.querySelector("#btn");
+    const id = document.getElementById("id");
+    const resultNode = document.querySelector('#result');
+    let url = "https://jsonplaceholder.typicode.com/users/...";
+
+    btn.addEventListener('click', ()=> {
+        fetch(url.replace('...',`${id.value}/todos`))
+            .then((response) => {
+                const result = response.json();
+                return result;
+            })
+            .then((data) => {
+                if (data.length === 0) {
+                    resultNode.innerHTML = "Пользователь с указанным id не найден";
+                } else {
+                    resultNode.innerHTML = "";
+                    for (let i in data) {
+                        if (data[i].completed){
+                            resultNode.innerHTML += `<li>${data[i].title}</li>`;
+                        } else{
+                            resultNode.innerHTML += `<li><s>${data[i].title}</s></li>`;
+                        }
+                    };
+                }})
+            .catch(() => {
+                console.log('error');
+            });
+
+    });
+
+</script>
+</body>
+</html>

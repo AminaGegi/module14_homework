@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+</head>
+<body>
+<div>
+    <fieldset>
+        <legend >Номер старницы</legend>
+        <input style="width: 50%" type="text" name="name" id = "page">
+    </fieldset>
+    <fieldset>
+        <legend >Лимит</legend>
+        <input style="width: 50%" type="text" name="name" id = "limit">
+    </fieldset>
+    <button type ="submit" id = "btn">Запрос</button>
+</div>
+<div id = "result"></div>
+<script>
+    let btn = document.querySelector("#btn");
+    let resultNode = document.querySelector("#result");
+    btn.addEventListener('click', ()=> {
+        resultNode.innerHTML = "";
+        let page = document.querySelector("#page");
+        let limit = document.querySelector("#limit");
+        let url = `https://picsum.photos/v2/list?page=${page.value}&limit=${limit.value}`;
+        let p = +page.value;
+        let l = +limit.value;
+        console.log(typeof p, l)
+        if (p > 11 || p<0) {
+            if(l > 11 || l < 0) {
+                resultNode.innerHTML = "Номер страницы и лимит вне диапазона от 1 до 10";
+            }else   {
+                resultNode.innerHTML = "Номер страницы вне диапазона от 1 до 10";
+            }
+        } else if (l > 11 || l < 0){
+            resultNode.innerHTML = "Лимит вне диапазона от 1 до 10";
+        } else {
+            fetch(url)
+                .then((response) => {
+                    const result = response.json();
+                    return result;
+                })
+                .then((data) => {
+                    for (let i in data) {
+                        resultNode.innerHTML += `<img src=${data[i].download_url} width="150" height="150"></img>`;
+                    }
+
+                })
+                .catch(() => {
+                    console.log('error')
+                })
+        }
+
+    });
+
+</script>
+</body>
+</html>

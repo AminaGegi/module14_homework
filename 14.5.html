@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<script>
+
+
+    if (localStorage.getItem('name')) {
+        if (localStorage.getItem('date')) {
+            alert(`Добрый день, ${localStorage.getItem('name')}! Давно не виделись. В последний раз вы были у нас ${localStorage.getItem('data')}`);
+            let date = new Date();
+            localStorage.setItem('date', date);
+        } else {
+            let name = prompt("Добро пожаловать! Назовите, пожалуйста, ваше имя");
+            let date = new Date();
+            localStorage.setItem('name', name);
+            localStorage.setItem('date', date);
+        }
+    } else {
+        let name = prompt("Добро пожаловать! Назовите, пожалуйста, ваше имя");
+        let date = new Date();
+        localStorage.setItem('name', name);
+        localStorage.setItem('date', date);
+    }
+</script>
+</head>
+<body>
+<p>Задание 14.5</p>
+</body>
+</html>
